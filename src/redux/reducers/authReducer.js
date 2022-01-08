@@ -15,6 +15,7 @@ const authReducer = (state = initState, action) => {
   switch (action.type) {
     case SET_IS_AUTHENTICATED:
       const { isAuthenticated } = action;
+      console.log(isAuthenticated);
       return { ...state, isAuthenticated: true };
     default:
       return state;

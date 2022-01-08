@@ -8,6 +8,7 @@ export function* handlePostAuth(action) {
       return postIsAuthenticated(action.payload);
     });
     const { data } = response;
+    console.log(data);
     yield put(setIsAuthenticated(true));
   } catch (error) {
     console.log(error);
