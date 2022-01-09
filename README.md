@@ -21,3 +21,10 @@
 - green1: "#27E1C0",
 
 All colours given above are added to `tailwind.config.js` and can be used as `bg-{colorName}`.
+
+### Features -
+
+- All Side Effects are handled by `redux-saga`
+- All global State is managed by `redux store`
+- Forms are custom built, and have controlled components.
+- All forms validation is done using `Yup`.

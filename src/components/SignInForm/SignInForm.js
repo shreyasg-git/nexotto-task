@@ -11,6 +11,7 @@ const SignInForm = () => {
 
   const onPasswordChange = (event) => {
     setPassword(event.target.value);
+    setValidationMsg("");
   };
 
   const handleSubmitClick = async () => {
@@ -35,43 +36,53 @@ const SignInForm = () => {
           !
         </span>
       </div>
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          handleSubmitClick();
+        }}
+      >
+        <div className="flex flex-col items-center mx-4 mt-6 align-middle">
+          <div className="w-full ">
+            <label
+              htmlFor="emailid"
+              className="mb-2 text-transparent std-label w-100 text-clip bg-clip-text bg-gradient-to-tl from-green-400 to-blue-500"
+            >
+              Email :
+            </label>
+            <input
+              className="border-gray-700 std-input focus:border-2 bg-grey3"
+              disabled={true}
+              value={user.email}
+            />
+          </div>
+          <div className="w-full ">
+            <label
+              htmlFor="password"
+              className="mb-2 text-transparent std-label w-100 text-clip bg-clip-text bg-gradient-to-tl from-green-400 to-blue-500"
+            >
+              Enter Password :
+            </label>
 
-      <div className="flex flex-col items-center mx-4 mt-6 align-middle">
-        <div className="w-full ">
-          <label
-            htmlFor="emailid"
-            className="mb-2 text-transparent std-label w-100 text-clip bg-clip-text bg-gradient-to-tl from-green-400 to-blue-500"
-          >
-            Email :
-          </label>
-          <input
-            className="border-gray-700 std-input focus:border-2 bg-grey3"
-            disabled={true}
-            value={user.email}
-          />
+            <input
+              className="border-gray-700 std-input focus:border-2 bg-grey3"
+              type="password"
+              onChange={onPasswordChange}
+              value={password}
+            />
+            {validationMsg ? <div className="text-red-700">{validationMsg}</div> : null}
+          </div>
+          <div className="flex flex-col justify-center m-3 align-middle w-fit">
+            <button
+              type="submit"
+              className="std-btn active:bg-green-700 hover:bg-gradient-to-tl from-green-400 to-blue-500 hover:text-black"
+              onClick={handleSubmitClick}
+            >
+              Sign In
+            </button>
+          </div>
         </div>
-        <div className="w-full ">
-          <label
-            htmlFor="password"
-            className="mb-2 text-transparent std-label w-100 text-clip bg-clip-text bg-gradient-to-tl from-green-400 to-blue-500"
-          >
-            Enter Password :
-          </label>
-
-          <input
-            className="border-gray-700 std-input focus:border-2 bg-grey3"
-            type="password"
-            onChange={onPasswordChange}
-            value={password}
-          />
-          {validationMsg ? <div className="text-red-700">{validationMsg}</div> : null}
-        </div>
-        <div className="flex flex-col justify-center m-3 align-middle w-fit">
-          <button type="submit" className="std-btn" onClick={handleSubmitClick}>
-            Sign In
-          </button>
-        </div>
-      </div>
+      </form>
     </div>
   );
 };

@@ -23,6 +23,6 @@ const NexottoSite = () => {
   useEffect(() => {
     window.location.href = "https://nexotto.com/";
   });
-  return <div> Go To Nexotto Site</div>;
+  return <div> Redirecting to Nexotto Site...</div>;
 };
 export default App;
