@@ -1,20 +1,25 @@
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { getUser } from "../../redux/reducers/userReducer";
 import * as yup from "yup";
 
 const SignUpForm = () => {
+  const [localEmail, setLocalEmail] = useState("");
   const [validationMsg, setValidationMsg] = useState("");
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.user.user);
 
-  const handleNextClick = () => {
-    const emailValidation = yup.object().shape({ email: yup.string().email() });
-    if (emailValidation.isValid({ ...user.email })) {
-      dispatch(getUser());
+  const handleNextClick = async () => {
+    const emailValidation = yup.object().shape({ email: yup.string().email().required() });
+    if (await emailValidation.isValid({ email: localEmail })) {
+      dispatch(getUser(localEmail));
     } else {
-      setValidationMsg("Email Not Valid");
+      setValidationMsg("Please enter a valid email Address.");
     }
+  };
+
+  const emailOnChange = (e) => {
+    setValidationMsg("");
+    setLocalEmail(e.target.value);
   };
 
   return (
@@ -30,9 +35,13 @@ const SignUpForm = () => {
           >
             Email :
           </label>
-          <input className="border-gray-700 std-input focus:border-2 bg-grey3" />
+          <input
+            className="border-gray-700 std-input focus:border-2 bg-grey3"
+            value={localEmail}
+            onChange={emailOnChange}
+          />
+          {validationMsg ? <div className="text-red-700">{validationMsg}</div> : null}
         </div>
-        {validationMsg ? <div>Not Valid Email</div> : null}
         <div className="flex flex-col justify-center m-3 align-middle w-fit">
           <button type="submit" className="std-btn" onClick={handleNextClick}>
             Next

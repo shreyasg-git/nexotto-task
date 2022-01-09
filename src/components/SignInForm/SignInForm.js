@@ -1,8 +1,10 @@
 import { getIsAuthenticated } from "../../redux/reducers/authReducer";
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
+import * as yup from "yup";
 
 const SignInForm = () => {
+  const [validationMsg, setValidationMsg] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.user);
@@ -11,8 +13,13 @@ const SignInForm = () => {
     setPassword(event.target.value);
   };
 
-  const handleSubmitClick = () => {
-    dispatch(getIsAuthenticated(user.email, password));
+  const handleSubmitClick = async () => {
+    const passwordValidation = yup.object().shape({ password: yup.string().required() });
+    if (await passwordValidation.isValid({ password })) {
+      dispatch(getIsAuthenticated(user.email, password));
+    } else {
+      setValidationMsg("Please enter your password");
+    }
   };
   return (
     <div className="border-2 border-gray-700 signupform-main h-fit bg-grey2">
@@ -35,6 +42,19 @@ const SignInForm = () => {
             htmlFor="emailid"
             className="mb-2 text-transparent std-label w-100 text-clip bg-clip-text bg-gradient-to-tl from-green-400 to-blue-500"
           >
+            Email :
+          </label>
+          <input
+            className="border-gray-700 std-input focus:border-2 bg-grey3"
+            disabled={true}
+            value={user.email}
+          />
+        </div>
+        <div className="w-full ">
+          <label
+            htmlFor="password"
+            className="mb-2 text-transparent std-label w-100 text-clip bg-clip-text bg-gradient-to-tl from-green-400 to-blue-500"
+          >
             Enter Password :
           </label>
 
@@ -44,6 +64,7 @@ const SignInForm = () => {
             onChange={onPasswordChange}
             value={password}
           />
+          {validationMsg ? <div className="text-red-700">{validationMsg}</div> : null}
         </div>
         <div className="flex flex-col justify-center m-3 align-middle w-fit">
           <button type="submit" className="std-btn" onClick={handleSubmitClick}>
@@ -62,5 +83,4 @@ const SignInForm = () => {
 // lastName	"Jag"
 // companyName	"Nexotto"
 
-<div></div>;
 export default SignInForm;
